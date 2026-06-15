@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <title>BriefScope</title>
+    <script>
+      // ROOT_PATH = the part before /ui in the URL.
+      // /api/briefscope_cloud_openai/ui/...  ->  /api/briefscope_cloud_openai
+      // /ui/...                              ->  ''  (local / standalone)
+      const match = window.location.pathname.match(/^(\/api\/[^/]+)(?=\/ui)/);
+      window.__ROOT_PATH__ = match ? match[1] : '';
+      // Vite emits relative asset URLs (base: './'). Inject a <base> so those
+      // relative URLs resolve against the SPA root regardless of route depth
+      // (a hard refresh on /ui/projects/123 still loads /api/<plugin>/ui/assets/...).
+      (function () {
+        var b = document.createElement('base');
+        b.href = (window.__ROOT_PATH__ || '') + '/ui/';
+        document.head.appendChild(b);
+      })();
+    </script>
+    <script type="module" crossorigin src="./assets/index-D3FDvMD6.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CTgyBqx3.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

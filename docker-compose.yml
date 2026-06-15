@@ -1,0 +1,68 @@
+services:
+  # ── Ollama (GPU — NVIDIA) ───────────────────────────────────────────────────
+  # Requires: NVIDIA Container Toolkit installed on the host
+  # Install:  https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
+  briefscope_ollama_gpu:
+    image: ollama/ollama:latest
+    container_name: briefscope_ollama_gpu
+    volumes:
+      - briefscope_ollama_gpu_models:/root/.ollama
+    networks:
+      - queai_network
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  # ── ChromaDB vector store ─────────────────────────────────────────────────
+  briefscope_chroma_gpu:
+    image: chromadb/chroma:1.5.9
+    container_name: briefscope_chroma_gpu
+    environment:
+      - IS_PERSISTENT=TRUE
+      - ANONYMIZED_TELEMETRY=FALSE
+    volumes:
+      - briefscope_chroma_gpu_data:/data
+    networks:
+      - queai_network
+    restart: unless-stopped
+    # Chroma listens on 8000 internally — not published to host
+
+  # ── BriefScope app ──────────────────────────────────────────────────────────
+  briefscope_local_gpu:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: briefscope_local_gpu_service
+    environment:
+      - ROOT_PATH=/api/briefscope_local_gpu
+      - LLM_MODE=local
+      - OLLAMA_HOST=http://briefscope_ollama_gpu:11434
+    volumes:
+      - briefscope_local_gpu_data:/code/data
+      - briefscope_local_gpu_generated:/code/generated
+    networks:
+      - queai_network
+    depends_on:
+      - briefscope_ollama_gpu
+      - briefscope_chroma_gpu
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.briefscope_local_gpu.rule=PathPrefix(`/api/briefscope_local_gpu`)"
+      - "traefik.http.routers.briefscope_local_gpu.entrypoints=web"
+      - "traefik.http.services.briefscope_local_gpu.loadbalancer.server.port=8080"
+
+volumes:
+  briefscope_ollama_gpu_models:   # persists downloaded models — shared if both cpu+gpu installed
+  briefscope_local_gpu_data:
+  briefscope_local_gpu_generated:
+  briefscope_chroma_gpu_data:
+
+networks:
+  queai_network:
+    external: true
