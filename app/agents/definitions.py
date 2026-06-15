@@ -106,6 +106,7 @@ CREATOR = AgentDef(
     prompt_file="creador.md",
     tools=(
         "consultar_guia_formato",
+        "consultar_guia_diseno",
         "consultar_guia_tipo",
         "leer_investigacion",
         "leer_documento",

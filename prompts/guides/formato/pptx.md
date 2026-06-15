@@ -38,11 +38,27 @@ p.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 guardar_documento(prs)
 ```
 
+Charts (embed a matplotlib figure from memory, no temp files):
+```python
+from io import BytesIO
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize=(8, 4.2), dpi=200)
+ax.bar(["Q1", "Q2", "Q3", "Q4"], [12, 18, 15, 23], color="#2563EB")
+ax.set_title("Revenue (M$)"); fig.tight_layout()
+buf = BytesIO(); fig.savefig(buf, format="png", bbox_inches="tight"); buf.seek(0)
+plt.close(fig)
+slide.shapes.add_picture(buf, Inches(1.2), Inches(1.3), width=Inches(10.9))
+```
+
 Best practices:
+- **Call `consultar_guia_diseno()` first**: pick one palette (its hex) and one
+  font pairing and reuse them on every slide.
 - Set `slide_width`/`slide_height` for 16:9 (13.333 × 7.5 in).
 - Use the blank layout (`slide_layouts[6]`) and place text boxes yourself for consistent design; or use layouts with placeholders (`[0]` title, `[1]` content) for speed.
-- Keep a coherent palette (define `RGBColor` constants and reuse them).
-- One idea per slide; short titles; few-word bullets.
+- Define `RGBColor` constants from the chosen palette and reuse them.
+- One idea per slide; short titles; few-word bullets; charts/big numbers over prose.
 
 Common mistakes:
 - Do not forget `guardar_documento(prs)` at the end.

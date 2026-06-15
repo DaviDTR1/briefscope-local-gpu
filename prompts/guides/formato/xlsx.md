@@ -37,9 +37,29 @@ ws.freeze_panes = "A2"
 guardar_documento(wb)
 ```
 
+Conditional formatting & charts (make the data read itself):
+```python
+from openpyxl.formatting.rule import ColorScaleRule, DataBarRule
+from openpyxl.chart import BarChart, Reference
+# green->red scale over a range
+ws.conditional_formatting.add("B2:C4",
+    ColorScaleRule(start_type="min", start_color="F8696B",
+                   end_type="max", end_color="63BE7B"))
+# data bars
+ws.conditional_formatting.add("D2:D4", DataBarRule(start_type="min", end_type="max", color="2563EB"))
+# native chart anchored to a cell
+chart = BarChart(); chart.title = "By region"
+data = Reference(ws, min_col=2, max_col=3, min_row=1, max_row=4)
+chart.add_data(data, titles_from_data=True)
+chart.set_categories(Reference(ws, min_col=1, min_row=2, max_row=4))
+ws.add_chart(chart, "F2")
+```
+
 Best practices:
+- **Call `consultar_guia_diseno()` first** for the palette hex (header fill, bars).
 - Bold headers with a colored fill and `freeze_panes` to lock the title row.
 - Use **real formulas** (`"=SUM(B2:B10)"`) instead of computing in Python when the user will want to edit them.
+- Add `ColorScaleRule`/`DataBarRule`/`IconSetRule` and native charts for tables of numbers.
 - Adjust `column_dimensions[...].width` so the content is readable.
 - Apply number formatting with `cell.number_format = "#,##0.00"` or `"0%"`.
 - For several sections use several sheets (`wb.create_sheet("Detail")`).

@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-06-15
+
+### Added
+- **Design system guide** (`prompts/guides/diseno.md`) and a new
+  `consultar_guia_diseno` tool: curated color palettes (with hex), font pairings,
+  a spacing scale and ready-to-use visual recipes (PPTX with an embedded chart,
+  branded PDF/HTML CSS, XLSX conditional formatting + chart, DOCX styles). The
+  creator agent now consults it before designing and reuses one palette + one
+  font pairing across each document.
+- `matplotlib` and `Pillow` dependencies for charts and image handling in code
+  mode (embeddable into PPTX/PDF/DOCX).
+- `fonts-liberation` and `fonts-lato` system fonts in the Docker image so the
+  default and recipe typography renders correctly.
+
+### Changed
+- Upgraded the default PDF/HTML stylesheet (Slate Professional palette: serif
+  headings, sans body, accent color, soft surface, banded tables, page numbers).
+- Enriched the per-format guides (PPTX/XLSX/PDF/DOCX) with chart,
+  conditional-formatting and styling recipes plus pointers to the design guide.
+
+### Note
+- The new dependencies and fonts require rebuilding the Docker image.
+
 ## [1.3.1] - 2026-06-15
 
 ### Added

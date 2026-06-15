@@ -13,6 +13,11 @@ Contract:
 
 Use it for reports, memos, documentation, proposals and any document that is structured text. For a branded finish, pass your own `estilo_css`.
 
+**For a polished look, call `consultar_guia_diseno()`** and build `estilo_css` from
+a chosen palette + font pairing (it has a ready-to-copy branded CSS recipe). If you
+omit `estilo_css`, a refined default style is applied (soft surface, serif headings,
+banded tables, page numbers).
+
 Common mistakes to avoid:
 - Do not include the `<html>` or `<style>` block: only Markdown (and optionally CSS separately in `estilo_css`).
 - Markdown tables need the separator row `|---|---|`.

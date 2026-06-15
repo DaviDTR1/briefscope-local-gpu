@@ -21,6 +21,7 @@ from pathlib import Path
 _GUIDES_DIR = Path(__file__).resolve().parent.parent.parent.parent / "prompts" / "guides"
 _FORMAT_DIR = _GUIDES_DIR / "formato"
 _TYPE_DIR = _GUIDES_DIR / "tipo"
+_DESIGN_FILE = _GUIDES_DIR / "diseno.md"
 
 _DESC_RE = re.compile(r"<!--\s*desc:\s*(.+?)\s*-->", re.IGNORECASE | re.DOTALL)
 
@@ -35,6 +36,22 @@ def read_format_guide(formato: str) -> str:
     return (
         f"There is no format guide for '{formato}'. Available formats: {available}. "
         "Use well-structured Markdown (fast mode) or Python code (code mode)."
+    )
+
+
+def read_design_guide(tema: str = "") -> str:
+    """Return the design guide (palettes, typography, spacing, visual recipes).
+
+    ``tema`` is a free-text hint of what the agent wants to focus on (e.g.
+    "pptx", "paletas"); the full guide is returned regardless so the agent has
+    the whole design system at hand.
+    """
+    if _DESIGN_FILE.is_file():
+        return _DESIGN_FILE.read_text(encoding="utf-8")
+    return (
+        "No design guide is available. Pick a coherent palette (one primary, one "
+        "accent, neutral text, a soft surface background) and one font pairing, "
+        "and reuse them across the whole document."
     )
 
 

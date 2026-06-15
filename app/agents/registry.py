@@ -24,7 +24,7 @@ from langchain_core.tools import StructuredTool
 from pydantic import BaseModel, Field
 
 from app.agents.context import RunContext
-from app.services.documents import read_format_guide, read_type_guide
+from app.services.documents import read_format_guide, read_type_guide, read_design_guide
 
 
 # --------------------------------------------------------------------------- #
@@ -32,6 +32,14 @@ from app.services.documents import read_format_guide, read_type_guide
 # --------------------------------------------------------------------------- #
 class _ConsultarGuiaFormatoInput(BaseModel):
     formato: str = Field(description="File format: pdf, docx, xlsx, pptx, html, md, txt.")
+
+
+class _ConsultarGuiaDisenoInput(BaseModel):
+    tema: str = Field(
+        default="",
+        description="Optional focus hint (e.g. 'pptx', 'paletas', 'tipografia'). "
+        "The full design system is returned regardless.",
+    )
 
 
 class _ConsultarGuiaTipoInput(BaseModel):
@@ -138,6 +146,21 @@ def _build_executable(name: str, ctx: RunContext) -> StructuredTool:
             ),
             func=read_format_guide,
             args_schema=_ConsultarGuiaFormatoInput,
+        )
+
+    if name == "consultar_guia_diseno":
+        return StructuredTool(
+            name="consultar_guia_diseno",
+            description=(
+                "Returns the DESIGN system: curated color palettes (with hex), font "
+                "pairings, spacing scale and ready-to-use visual recipes (PPTX with an "
+                "embedded chart, branded PDF/HTML CSS, XLSX conditional formatting + "
+                "chart, DOCX styles). Call it BEFORE designing so the document looks "
+                "professional and consistent. Pick one palette and one font pairing and "
+                "reuse them across the whole document."
+            ),
+            func=read_design_guide,
+            args_schema=_ConsultarGuiaDisenoInput,
         )
 
     if name == "consultar_guia_tipo":

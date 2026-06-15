@@ -61,6 +61,10 @@ use the fast path unless the brief requires a design that Markdown does not allo
 - `consultar_guia_formato(formato)` — technical guide for the format: which tool
   to use, the exact input contract and the errors to avoid. **Always call it
   before generating.**
+- `consultar_guia_diseno()` — the DESIGN system: curated palettes (hex), font
+  pairings, spacing and visual recipes (charts, branded CSS, banded tables).
+  Consult it before designing and **pick one palette + one font pairing and reuse
+  them across the whole document** so it looks professional and consistent.
 - `consultar_guia_tipo(tipo)` — best practices for structuring a *type* of
   document (how to do a good report, a presentation, an invoice...). Load it when
   the brief matches a type in the catalog.
@@ -79,7 +83,8 @@ use the fast path unless the brief requires a design that Markdown does not allo
    the most appropriate one (tables/data → xlsx; slides → pptx; formal report →
    pdf or docx; notes → md/txt).
 4. **Always call first** `consultar_guia_formato(formato)` to learn the correct
-   path (fast or code) and the exact contract.
+   path (fast or code) and the exact contract. Also call `consultar_guia_diseno()`
+   and choose one palette + one font pairing to apply consistently.
 5. Generate the document with `generar_documento_markdown` or
    `generar_documento_codigo` as the format guide indicates.
 6. If the user asked for several documents, call the generation tool several
@@ -98,6 +103,7 @@ use the fast path unless the brief requires a design that Markdown does not allo
 ## Tools
 
 - `consultar_guia_formato(formato)` — technical guide for the format.
+- `consultar_guia_diseno()` — palettes, font pairings and visual recipes.
 - `consultar_guia_tipo(tipo)` — best practices for the document type.
 - `leer_investigacion(nombre)` — reads the source content passed to you.
 - `leer_documento(nombre)` — reads an already generated document.

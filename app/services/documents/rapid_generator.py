@@ -28,26 +28,40 @@ _VALID = ("docx", "pdf", "html", "txt", "md")
 # Clean, neutral-professional stylesheet used for PDF/HTML when the agent does
 # not supply its own CSS.
 _DEFAULT_CSS = """
-@page { size: A4; margin: 22mm; }
-body {
-    font-family: 'DejaVu Sans', 'Segoe UI', Arial, sans-serif;
-    color: #1a1a2e; line-height: 1.55; font-size: 11pt;
+/* Slate Professional palette: primary #1E293B, accent #2563EB, ink #0F172A,
+   muted #64748B, surface #F8FAFC. Serif headings + sans body, with web-safe
+   fallbacks so WeasyPrint always has a font. */
+@page {
+    size: A4; margin: 22mm;
+    @bottom-center { content: counter(page) " / " counter(pages);
+                     font-family: 'Lato','Inter','DejaVu Sans',sans-serif;
+                     font-size: 8pt; color: #94A3B8; }
 }
-h1 { color: #0f3460; font-size: 22pt; border-bottom: 2px solid #0f3460;
-     padding-bottom: 4px; margin: 0 0 14px; }
-h2 { color: #16213e; font-size: 15pt; margin: 22px 0 8px; }
-h3 { color: #1a1a2e; font-size: 12pt; margin: 16px 0 6px; }
-p  { margin: 0 0 9px; }
-ul, ol { margin: 0 0 10px 22px; }
-table { border-collapse: collapse; width: 100%; margin: 14px 0; font-size: 10pt; }
-th, td { border: 1px solid #cccccc; padding: 6px 9px; text-align: left; vertical-align: top; }
-th { background: #0f3460; color: #ffffff; }
-tr:nth-child(even) td { background: #f0f4f8; }
-code { background: #f4f4f4; padding: 1px 5px; border-radius: 3px;
-       font-family: 'DejaVu Sans Mono', monospace; }
-pre { background: #f4f4f4; padding: 12px; border-radius: 5px; overflow-x: auto; }
-blockquote { border-left: 4px solid #0f3460; margin: 14px 0; padding: 2px 16px;
-             color: #5a5a6e; background: #f2f4f8; }
+body {
+    font-family: 'Lato', 'Inter', 'DejaVu Sans', 'Segoe UI', Arial, sans-serif;
+    color: #0F172A; line-height: 1.58; font-size: 11pt;
+}
+h1 { font-family: 'Lora','Liberation Serif',Georgia,serif; color: #1E293B;
+     font-size: 23pt; border-bottom: 3px solid #2563EB; padding-bottom: 5px;
+     margin: 0 0 16px; line-height: 1.2; }
+h2 { color: #1E293B; font-size: 16pt; margin: 24px 0 8px; font-weight: 700; }
+h3 { color: #334155; font-size: 12.5pt; margin: 18px 0 6px; font-weight: 700; }
+p  { margin: 0 0 10px; }
+a  { color: #2563EB; text-decoration: none; }
+ul, ol { margin: 0 0 11px 22px; }
+li { margin: 0 0 4px; }
+strong { color: #1E293B; }
+hr { border: none; border-top: 1px solid #E2E8F0; margin: 20px 0; }
+table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 10pt; }
+th, td { border: 1px solid #E2E8F0; padding: 7px 10px; text-align: left; vertical-align: top; }
+th { background: #1E293B; color: #ffffff; font-weight: 700; }
+tr:nth-child(even) td { background: #F8FAFC; }
+code { background: #F1F5F9; padding: 1px 5px; border-radius: 3px; color: #334155;
+       font-family: 'DejaVu Sans Mono', monospace; font-size: 9.5pt; }
+pre { background: #F1F5F9; padding: 12px 14px; border-radius: 6px; overflow-x: auto;
+      border: 1px solid #E2E8F0; }
+blockquote { border-left: 4px solid #2563EB; margin: 16px 0; padding: 4px 18px;
+             color: #475569; background: #F8FAFC; border-radius: 0 4px 4px 0; }
 """
 
 

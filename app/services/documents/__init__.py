@@ -37,6 +37,7 @@ from app.services.documents.guides import (
     read_type_guide,
     list_type_guides,
     type_guides_catalog,
+    read_design_guide,
 )
 from app.services.documents.sources import read_source_document
 
@@ -53,6 +54,7 @@ __all__ = [
     "safe_generated_path",
     "delete_generated",
     "read_format_guide",
+    "read_design_guide",
     "read_type_guide",
     "list_type_guides",
     "type_guides_catalog",

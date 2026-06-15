@@ -27,6 +27,8 @@ weasyprint==62.3         # HTML -> PDF (rapid mode, full Unicode + CSS)
 pydyf==0.10.0            # weasyprint dep: required pin (0.11+ breaks write_pdf with AttributeError 'transform')
 reportlab==4.2.5         # PDF (code mode, precise layout)
 python-pptx==1.0.2       # PPTX (code mode)
+matplotlib==3.9.2        # charts (code mode: embed into pptx/pdf/docx)
+Pillow==10.4.0           # image handling (code mode)
 
 # LLM — LangChain unified layer + Ollama + cloud fallback
 langchain-core==1.4.6

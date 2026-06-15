@@ -42,6 +42,7 @@ from app.services.llm.provider import build_llm
 _TOOL_LABEL = {
     "buscar_en_documentos":        "Searching information in documents",
     "consultar_guia_formato":      "Consulting format guide",
+    "consultar_guia_diseno":       "Consulting design guide",
     "consultar_guia_tipo":         "Consulting type guide",
     "guardar_investigacion":       "Saving research",
     "leer_investigacion":          "Reading research",

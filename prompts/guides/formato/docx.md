@@ -36,6 +36,15 @@ doc.add_paragraph("Body text.")
 guardar_documento(doc)
 ```
 
+For brand identity, set document **styles** once instead of formatting each
+paragraph (call `consultar_guia_diseno()` for the palette + a DOCX styles recipe):
+```python
+from docx.shared import Pt, RGBColor
+doc.styles["Normal"].font.name = "Lato"; doc.styles["Normal"].font.size = Pt(11)
+h1 = doc.styles["Heading 1"]; h1.font.color.rgb = RGBColor(0x1E, 0x29, 0x3B)
+table.style = "Light Grid Accent 1"   # banded table style
+```
+
 Common mistakes:
 - Do not forget `guardar_documento(doc)` at the end.
 - For font color/size work on `run.font` (not on the paragraph).
