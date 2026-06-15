@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-06-15
+
+### Added
+
+- The researcher and orchestrator can now read a full **source** document the
+  user uploaded — new `leer_documento_fuente` tool — not only search fragments
+  via RAG. A whole document is returned when it fits the read budget; larger
+  documents (e.g. a full book) are delivered in sequential parts so the entire
+  work can be read across several calls. New `source_read_max_chars` setting
+  controls the per-read budget. Before delegating, the orchestrator also frames
+  the requirements/criteria the investigation must meet, and the researcher
+  checks its report against them before saving.
+
 ## [1.3.0] - 2026-06-15
 
 ### Added

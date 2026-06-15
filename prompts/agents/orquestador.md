@@ -57,6 +57,11 @@ Use your judgment; there is no rigid script.
   document creator: leave a written, well-organized record of what will serve as
   the source.
 - `leer_investigacion(nombre)` — re-reads a report you saved earlier.
+- `leer_documento_fuente(nombre, parte?)` — reads the full text of a SOURCE
+  document the user uploaded, by its name. Use it when you need the whole
+  document (to analyze or quote it), not just fragments. If it is too large to
+  return at once it comes in sequential parts: call again with the next `parte`
+  until the end. For a single specific datum, `buscar_en_documentos` is enough.
 - `leer_documento(nombre)` — reads the content of an ALREADY generated document
   (the downloadable file: pdf, docx, xlsx, pptx, md, txt), by its name. Use it
   when the user wants to review or modify a document you already delivered and

@@ -52,6 +52,10 @@ _DEFAULTS: dict[str, Any] = {
     "rag_top_k":            15,
     "rag_chunk_size":       1200,
     "rag_chunk_overlap":    200,
+    # Per-read character budget for leer_documento_fuente (reading a full source
+    # document). Documents larger than this are served in sequential parts. Lower
+    # it for models with a small context window.
+    "source_read_max_chars": 120_000,
     "history_compact_after": 6,
     # --- Multi-agent orchestration ---
     # "auto":     pick the flow from model capability (default). Cloud frontier

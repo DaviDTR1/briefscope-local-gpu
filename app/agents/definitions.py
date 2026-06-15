@@ -73,6 +73,7 @@ AGENT_INVOCATION_TOOLS = ("invocar_investigador", "invocar_creador_documentos")
 # Search/research tools the orchestrator uses to gather information itself.
 RESEARCH_TOOLS = (
     "buscar_en_documentos",
+    "leer_documento_fuente",
     "guardar_investigacion",
     "leer_investigacion",
     "leer_documento",
@@ -82,6 +83,7 @@ RESEARCH_TOOLS = (
 # report. No invocation tools — the researcher never spawns further sub-agents.
 RESEARCHER_TOOLS = (
     "buscar_en_documentos",
+    "leer_documento_fuente",
     "leer_documento",
     "leer_investigacion",
     "guardar_investigacion",

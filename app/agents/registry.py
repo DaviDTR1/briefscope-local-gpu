@@ -66,6 +66,17 @@ class _LeerDocumentoInput(BaseModel):
     )
 
 
+class _LeerDocumentoFuenteInput(BaseModel):
+    nombre: str = Field(
+        description="Name of the uploaded SOURCE document to read (with or without extension)."
+    )
+    parte: int = Field(
+        default=1,
+        description="Part number to read when the document is too large to return at once. "
+        "Start at 1; the tool tells you how many parts there are and which to read next.",
+    )
+
+
 class _GenerarMarkdownInput(BaseModel):
     formato: str = Field(description="Output format: docx, pdf, html, txt or md.")
     contenido_markdown: str = Field(
@@ -222,6 +233,26 @@ def _build_executable(name: str, ctx: RunContext) -> StructuredTool:
             ),
             func=_read_doc,
             args_schema=_LeerDocumentoInput,
+        )
+
+    if name == "leer_documento_fuente":
+        from app.services.documents import read_source_document
+
+        def _read_source(nombre: str, parte: int = 1) -> str:
+            return read_source_document(ctx.project_id, nombre, parte)
+
+        return StructuredTool(
+            name="leer_documento_fuente",
+            description=(
+                "Reads the full text of a SOURCE document the user uploaded (the original "
+                "PDF/DOCX/TXT...), by its name. Use it when you need to read a whole document "
+                "to analyze it in depth or quote it verbatim — not just search fragments. If "
+                "the document is too large for one read, it is returned in sequential parts: "
+                "call again with the next 'parte' to keep reading until the end. For a targeted "
+                "lookup of a specific datum, prefer buscar_en_documentos."
+            ),
+            func=_read_source,
+            args_schema=_LeerDocumentoFuenteInput,
         )
 
     raise KeyError(name)

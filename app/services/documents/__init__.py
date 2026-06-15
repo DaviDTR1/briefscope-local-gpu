@@ -38,11 +38,13 @@ from app.services.documents.guides import (
     list_type_guides,
     type_guides_catalog,
 )
+from app.services.documents.sources import read_source_document
 
 __all__ = [
     "generate_markdown",
     "generate_code",
     "read_generated",
+    "read_source_document",
     "save_source_sidecar",
     "save_metadata",
     "read_metadata",

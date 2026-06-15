@@ -46,6 +46,7 @@ _TOOL_LABEL = {
     "guardar_investigacion":       "Saving research",
     "leer_investigacion":          "Reading research",
     "leer_documento":              "Reading document",
+    "leer_documento_fuente":       "Reading full document",
     "generar_documento_markdown":  "Generating document (Markdown)",
     "generar_documento_codigo":    "Generating document (code)",
     "invocar_investigador":        "Researching the documents",
@@ -117,12 +118,15 @@ def _format_doc_list(names: list[str]) -> str:
 
 def _system_for(agent: AgentDef, ctx: RunContext) -> str:
     is_orch = agent.name == "orquestador"
+    is_researcher = agent.name == "investigador"
     instructions = ctx.instructions if is_orch else ""
     doc_context = ctx.doc_context if is_orch else ""
-    doc_list = _format_doc_list(ctx.doc_names) if is_orch else ""
+    # The orchestrator and the researcher can read source documents by name
+    # (leer_documento_fuente), so both need the list of available filenames.
+    doc_list = _format_doc_list(ctx.doc_names) if (is_orch or is_researcher) else ""
     # The creator browses the type-guide catalog to pick the right playbook.
     guias_tipo = ""
-    if not is_orch:
+    if agent.name == "creador":
         from app.services.documents import type_guides_catalog
         guias_tipo = type_guides_catalog()
     return agent.render_system(
