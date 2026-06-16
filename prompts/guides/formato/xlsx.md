@@ -39,15 +39,17 @@ guardar_documento(wb)
 
 Conditional formatting & charts (make the data read itself):
 ```python
-from openpyxl.formatting.rule import ColorScaleRule, DataBarRule
-from openpyxl.chart import BarChart, Reference
+from openpyxl.formatting.rule import ColorScaleRule, DataBarRule, IconSetRule
+from openpyxl.chart import BarChart, LineChart, Reference
 # green->red scale over a range
 ws.conditional_formatting.add("B2:C4",
     ColorScaleRule(start_type="min", start_color="F8696B",
                    end_type="max", end_color="63BE7B"))
 # data bars
 ws.conditional_formatting.add("D2:D4", DataBarRule(start_type="min", end_type="max", color="2563EB"))
-# native chart anchored to a cell
+# traffic-light icon set
+ws.conditional_formatting.add("E2:E4", IconSetRule("3TrafficLights1", "percent", [0, 33, 67]))
+# native bar chart anchored to a cell
 chart = BarChart(); chart.title = "By region"
 data = Reference(ws, min_col=2, max_col=3, min_row=1, max_row=4)
 chart.add_data(data, titles_from_data=True)
@@ -55,11 +57,33 @@ chart.set_categories(Reference(ws, min_col=1, min_row=2, max_row=4))
 ws.add_chart(chart, "F2")
 ```
 
+### Trend line chart
+```python
+line = LineChart(); line.title = "Revenue trend"
+line.y_axis.title = "M$"; line.x_axis.title = "Quarter"
+vals = Reference(ws, min_col=4, min_row=1, max_row=4)   # includes header for the series name
+line.add_data(vals, titles_from_data=True)
+line.set_categories(Reference(ws, min_col=1, min_row=2, max_row=4))
+ws.add_chart(line, "F20")
+```
+
+### Dashboard layout (KPI tiles + multiple sheets)
+```python
+# KPI tiles across the top: big number + label, merged cells
+ws.merge_cells("A1:B1"); ws["A1"] = 1240; ws["A1"].font = Font(size=28, bold=True, color="1F2A44")
+ws.merge_cells("A2:B2"); ws["A2"] = "Signups"; ws["A2"].font = Font(size=11, color="6B7280")
+ws["D1"] = 0.12; ws["D1"].number_format = "0%"; ws["D1"].font = Font(size=28, bold=True, color="2BB673")
+# a detail sheet for the breakdown
+detail = wb.create_sheet("Detail")
+detail.append(["Region", "Units", "Revenue"])
+```
+
 Best practices:
 - **Call `consultar_guia_diseno()` first** for the palette hex (header fill, bars).
 - Bold headers with a colored fill and `freeze_panes` to lock the title row.
 - Use **real formulas** (`"=SUM(B2:B10)"`) instead of computing in Python when the user will want to edit them.
 - Add `ColorScaleRule`/`DataBarRule`/`IconSetRule` and native charts for tables of numbers.
+- Choose the chart per data: **bar/column** = comparison, **line** = trend over time, **pie** only for 3–5 part-to-whole slices.
 - Adjust `column_dimensions[...].width` so the content is readable.
 - Apply number formatting with `cell.number_format = "#,##0.00"` or `"0%"`.
 - For several sections use several sheets (`wb.create_sheet("Detail")`).

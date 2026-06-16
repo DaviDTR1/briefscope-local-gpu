@@ -18,6 +18,16 @@ a chosen palette + font pairing (it has a ready-to-copy branded CSS recipe). If 
 omit `estilo_css`, a refined default style is applied (soft surface, serif headings,
 banded tables, page numbers).
 
+### Tables, figures and charts on the fast path
+- **Tables:** write a Markdown table (with the `|---|---|` row). Right-align numeric
+  columns with `|---:|`. Style it in `estilo_css` (`th { background:#1E293B; color:#fff }`).
+- **Figures / charts:** embed a **real** image with `![caption](path)` only if you
+  actually have the image on disk (e.g. a chart you generated). The engine resolves
+  local paths. Never write a placeholder image tag. If a chart would help and you
+  cannot generate it here, use the code path below or suggest it in chat.
+- **Two-column / card layouts:** wrap a block in a `<div class="...">` and read the
+  raw-HTML rule below.
+
 Common mistakes to avoid:
 - Do not include the `<html>` or `<style>` block: only Markdown (and optionally CSS separately in `estilo_css`).
 - Markdown tables need the separator row `|---|---|`.
@@ -50,7 +60,7 @@ Two correct options:
 Never mix: don't put `### ...` / `- ...` inside a raw `<div>`/`<td>` that lacks `markdown="1"`.
 
 ## Code path — `generar_documento_codigo`
-Only if you need **pixel-perfect control**: certificates, absolute positioning, vector graphics, cover pages with full-bleed images. You write Python with **reportlab**.
+Only if you need **pixel-perfect control**: certificates, absolute positioning, vector graphics, cover pages with full-bleed images, styled tables and embedded charts. You write Python with **reportlab**.
 
 Contract:
 - `formato`: `"pdf"`
@@ -68,12 +78,59 @@ c.showPage()
 c.save()
 ```
 
+### Flowing document with a styled table (platypus)
+```python
+from reportlab.lib.pagesizes import A4
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.units import cm
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+
+styles = getSampleStyleSheet()
+doc = SimpleDocTemplate(OUTPUT_PATH, pagesize=A4,
+                        topMargin=2*cm, bottomMargin=2*cm,
+                        leftMargin=2*cm, rightMargin=2*cm)
+story = [Paragraph("Quarterly summary", styles["Title"]), Spacer(1, 12)]
+
+data = [["Metric", "Q1", "Q2", "Total"],
+        ["Sales", "1,000", "1,200", "2,200"],
+        ["Costs", "400", "450", "850"]]
+table = Table(data, colWidths=[6*cm, 3*cm, 3*cm, 3*cm])
+table.setStyle(TableStyle([
+    ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#1E293B")),
+    ("TEXTCOLOR",  (0, 0), (-1, 0), colors.white),
+    ("FONTNAME",   (0, 0), (-1, 0), "Helvetica-Bold"),
+    ("ALIGN",      (1, 0), (-1, -1), "RIGHT"),       # numeric columns
+    ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#F1F5F9")]),
+    ("GRID", (0, 0), (-1, -1), 0.4, colors.HexColor("#CBD5E1")),
+]))
+story += [table]
+doc.build(story)
+```
+
+### Embed a chart (matplotlib image into platypus)
+```python
+from io import BytesIO
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+from reportlab.platypus import Image
+fig, ax = plt.subplots(figsize=(6, 3.2), dpi=200)
+ax.bar(["Q1", "Q2", "Q3", "Q4"], [12, 18, 15, 23], color="#2563EB")
+ax.set_title("Revenue up 12% QoQ"); fig.tight_layout()
+buf = BytesIO(); fig.savefig(buf, format="png", bbox_inches="tight"); buf.seek(0)
+plt.close(fig)
+story += [Spacer(1, 12), Image(buf, width=15*cm, height=8*cm)]
+```
+
 Common mistakes:
 - Remember to call `c.save()` (or `doc.build(...)` with platypus) or the file will be empty.
 - reportlab coordinates have their origin at the bottom-left.
 - For long styled text use `platypus` (SimpleDocTemplate + Paragraph), not `drawString`.
+- Embed a chart/image only if it is **real** (generated or provided) — never a placeholder.
 
-**Quick decision:** is it structured text? → fast path. Is it custom design? → code path.
+**Quick decision:** is it structured text? → fast path. Is it custom design, a styled
+table or an embedded chart? → code path.
 
 ## Deliver complete content (no template)
 

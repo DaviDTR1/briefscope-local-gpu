@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-06-16
+
+### Added
+- **Attach-documents button in the chat bar.** The chat input now has a "＋"
+  button that uploads files straight into the current project, like modern AI
+  chats (alongside the existing documents panel).
+- **More code examples in the format guides** (figures, tables, charts, layouts):
+  native PPTX tables and charts plus a big-number layout; python-docx styled
+  tables and embedded matplotlib figures; reportlab platypus tables and chart
+  images; HTML KPI-card layouts; and an Excel line chart, icon-set rule and
+  dashboard/KPI skeleton.
+
+### Fixed
+- **Slides no longer overflow.** The PPTX guidance now mandates a content budget,
+  a fixed text box inside the safe area, `word_wrap=True` + `auto_size=NONE`
+  (instead of the box-growing autofit that pushed text off the slide), and
+  splitting dense slides.
+- **No meta-description titles on slides.** Cover titles/subtitles and slide
+  headlines must state the real subject, never describe the file or its format
+  (e.g. "Resumen extenso (en bullets)").
+
 ## [1.5.0] - 2026-06-15
 
 ### Added

@@ -4,7 +4,10 @@
 Slides. Always **PPTX** via `generar_documento_codigo` (see the `pptx` format guide). The goal is to communicate visually, not to dump text.
 
 ## Recommended structure
-1. **Cover** — strong title, subtitle, date/author. Brand-colored background.
+1. **Cover** — strong title, subtitle, date/author. Brand-colored background. The
+   title and subtitle are the **real subject** (e.g. "La fierecilla domada" /
+   "Comedia de William Shakespeare"), never a description of the file or its format
+   ("Resumen extenso (en bullets)", "Summary in bullets", "Overview").
 2. **Agenda / context** (optional) — what will be covered.
 3. **One idea per slide** — affirmative title (the conclusion, not the topic) + visual support.
 4. **Data** — one big highlighted figure or one simple table/chart per slide.
@@ -17,9 +20,13 @@ Slides. Always **PPTX** via `generar_documento_codigo` (see the `pptx` format gu
   topic label over bullets.
 - **10/20/30 guideline** (Kawasaki, echoed by Microsoft): ~10 slides, ~20 minutes,
   **≥30pt** font. **6×6** as a ceiling: at most ~6 bullets of ~6 words.
-- **Type sizes:** title/headline 30-40pt+, body ≥24pt. High contrast (dark on light
+- **Type sizes:** title/headline 30-40pt+, body ≥18pt. High contrast (dark on light
   or light on dark); avoid mid-tone on mid-tone.
 - **One chart / one data point per slide.** Big numbers shown huge, not in a sentence.
+- **Content budget so nothing overflows.** Keep the body inside a fixed box
+  (`top≈1.4`, `height≤5.4` in) with `word_wrap=True` and `auto_size=MSO_AUTO_SIZE.NONE`;
+  if a list needs more than ~6 lines, split it across two slides ("(1/2)", "(2/2)")
+  rather than letting text run off the slide edge.
 
 ## Color palettes (pick one; 2-3 colors, reuse across the deck)
 - **Dark + accent:** bg `#111827`, text `#F3F4F6`, accent cyan `#22D3EE`, secondary `#94A3B8`.
@@ -42,6 +49,11 @@ Define them as `RGBColor` constants and reuse on every slide.
 ## Mistakes to avoid
 - Whole paragraphs on a slide (it is a presentation, not a document).
 - More than ~6 lines of text per slide.
+- **Text overflowing the slide edge** — caused by leaving the default autofit so the
+  box grows. Fix with `auto_size=MSO_AUTO_SIZE.NONE` + `word_wrap=True`, a fixed box
+  inside the safe area, and splitting dense slides.
+- **Meta-description titles** ("Resumen en bullets", "Detailed overview") — use the
+  real subject as the title/subtitle.
 - Inconsistent colors across slides.
 - **Placeholders and fake assets.** Never add fake image captions ("[Imagen sin
   copyright] ...", "image here"), placeholder QR codes, or placeholder
