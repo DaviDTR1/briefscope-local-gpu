@@ -90,6 +90,52 @@ size and text — it sets `auto_size=NONE`, turns on word wrap and shrinks the f
 to the largest size that fits. (It needs a font file present; `DejaVu Sans` is
 installed. Prefer splitting slides over shrinking below ~16 pt.)
 
+## Overlap: the same rule applies to *every* box, not just the body
+
+Vertical overflow off the bottom is not the only failure. The deck also breaks
+when **narrow boxes grow sideways and collide** with the shape or column beside
+them — labels under diagram nodes, text inside cards, column captions, KPI
+captions. The cause is the same default `SHAPE_TO_FIT_TEXT` autofit (the box
+resizes to the text) **combined with `word_wrap = False`**, so a two-word label in
+a 1.2 in box spills out of its card and overlaps its neighbour.
+
+Apply the anti-overflow contract to **every text-bearing shape you create**, not
+only the main bullet box:
+
+- **Always** set `tf.word_wrap = True` and `tf.auto_size = MSO_AUTO_SIZE.NONE` on
+  each text box AND on each `AUTO_SHAPE` (card / pill / badge) that holds text.
+  Never leave the default autofit on a fixed-size element.
+- **Size the box to its content and leave a real gap** between columns/cards
+  (≥0.3 in of clear space). The text must fit *inside* the visible box — make the
+  box wider, the font smaller, or the label shorter; do not let it bleed out.
+- **Text inside a card stays inside the card.** Give the card's text_frame inner
+  margins (`margin_left/right ≈ Pt(8)`, `margin_top/bottom ≈ Pt(6)`) and word wrap
+  so long text wraps instead of crossing the rounded edge.
+- **Never stack two boxes in the same spot.** Before placing a shape, check that
+  its `left+width` and `top+height` stay within the band/card meant to contain it
+  and do not reach into the next one. For equal columns, divide the usable width
+  (≈11.5 in) by the column count and subtract the gutter.
+- For a multi-line label in a tight box, prefer a shorter label or a smaller font
+  over overflow; `tf.fit_text(...)` is the last resort.
+
+```python
+# A card whose text never bleeds past its edge
+from pptx.enum.shapes import MSO_SHAPE
+from pptx.enum.text import MSO_AUTO_SIZE, MSO_ANCHOR
+from pptx.util import Inches, Pt
+
+card = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE,
+                          Inches(0.9), Inches(2.25), Inches(3.45), Inches(2.7))
+tf = card.text_frame
+tf.word_wrap = True
+tf.auto_size = MSO_AUTO_SIZE.NONE          # card keeps its size; text wraps inside
+tf.vertical_anchor = MSO_ANCHOR.TOP
+tf.margin_left = tf.margin_right = Pt(8)
+tf.margin_top = tf.margin_bottom = Pt(6)
+p = tf.paragraphs[0]; p.text = "Fundamentos matemáticos y conceptuales"
+p.font.size = Pt(16)
+```
+
 ## Native table (graphic-frame)
 
 ```python
@@ -181,6 +227,10 @@ Common mistakes:
 - **Text overflow:** leaving the default autofit so the box grows past the slide
   edge — set `auto_size = MSO_AUTO_SIZE.NONE` + `word_wrap = True` and split dense
   slides instead.
+- **Overlapping shapes / sideways overflow:** a narrow box left with the default
+  autofit and `word_wrap=False` grows sideways and collides with the next card or
+  label. Set `auto_size=MSO_AUTO_SIZE.NONE` + `word_wrap=True` on *every* text box
+  and card, size each box to its content, and leave a gap between columns.
 - **Meta-description titles** ("Resumen en bullets", "Overview"): use the real
   subject as the title.
 - Do not fill slides with placeholder/fake content (fake image captions,

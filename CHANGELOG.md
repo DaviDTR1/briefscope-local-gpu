@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [1.7.3] - 2026-06-16
+
+### Changed
+- **Stronger anti-overlap guidance for generated slides.** The PPTX format guide
+  and the presentation type guide now require the anti-overflow contract
+  (`auto_size=MSO_AUTO_SIZE.NONE` + `word_wrap=True`, fixed box sized to its
+  content, gaps between columns/cards, inner card margins) on **every** text box
+  and card — not just the main bullet box — to stop narrow labels from growing
+  sideways and overlapping neighbouring shapes.
+- **More creative freedom within constraints.** The design guide now explicitly
+  encourages exploring custom palettes, layouts, covers and type pairings, as
+  long as they fit the document's tone and objective and preserve strong contrast
+  and clear organization. The creator agent prompt echoes this.
+
 ## [1.7.2] - 2026-06-16
 
 ### Added

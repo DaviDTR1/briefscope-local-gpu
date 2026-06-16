@@ -31,6 +31,9 @@ requested changes.)
 - Turn dense paragraphs into lists, tables or columns when it improves reading;
   and vice versa, merge loose bullets into prose when that adds clarity.
 - Add visual hierarchy (titles, subtitles, summaries, highlights).
+- Be creative with the visual design — explore palettes, layouts, covers and type
+  pairings beyond the defaults — as long as it fits the document's tone and objective
+  and keeps strong contrast and clear organization (see `consultar_guia_diseno`).
 - Adapt the structure to the format: what is ideal in a PDF is not in an XLSX or
   a PPTX.
 - Do not invent data: reorganize, summarize and write better, but all factual

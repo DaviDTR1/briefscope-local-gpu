@@ -4,6 +4,31 @@ Load this guide (`consultar_guia_diseno`) BEFORE designing any document so every
 deliverable looks professional and consistent — not random. Pick ONE palette and
 ONE font pairing per document and reuse them everywhere in it.
 
+## Creative freedom (within constraints)
+
+The palettes and recipes below are a reliable **starting point, not a cage**. You
+are encouraged to be creative: design your own colour palette, try a different
+layout, an unconventional cover, an editorial grid or a bolder type pairing — as
+long as the result still serves the document's **tone and objective** and stays
+professional. A children's workshop, a startup pitch, a legal memo and a wedding
+invitation should not look the same.
+
+When you go off-recipe, you must still satisfy these non-negotiables:
+
+- **Fit the tone and purpose.** Palette, type and layout match the subject and
+  audience (sober for finance/legal; warm for events; vivid for creative/marketing).
+  Creativity serves the message, it never fights it.
+- **Contrast and legibility.** Keep strong text/background contrast (aim for WCAG
+  AA: ~4.5:1 for body text, ~3:1 for large headings). No mid-tone on mid-tone, no
+  light grey on white. Check that any custom colours actually contrast.
+- **Order and organisation.** Clear visual hierarchy, consistent alignment and
+  spacing, generous whitespace. Creative ≠ cluttered or random.
+- **One coherent system per document.** Whatever you invent, choose it once and
+  apply the same palette + type system to every page/slide.
+
+If a custom choice would hurt readability or coherence, fall back to the curated
+palettes and pairings below.
+
 ## 1. Palettes
 
 Each palette has five roles: `primary` (headers / main accent), `accent`

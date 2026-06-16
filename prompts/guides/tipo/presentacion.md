@@ -52,6 +52,10 @@ Define them as `RGBColor` constants and reuse on every slide.
 - **Text overflowing the slide edge** — caused by leaving the default autofit so the
   box grows. Fix with `auto_size=MSO_AUTO_SIZE.NONE` + `word_wrap=True`, a fixed box
   inside the safe area, and splitting dense slides.
+- **Overlapping labels/cards (sideways overflow)** — narrow boxes (node labels,
+  column captions, text inside cards) left with the default autofit and no word wrap
+  grow sideways into their neighbours. Turn autofit off and word wrap on for *every*
+  box, size it to its content, and leave a real gap between columns/cards.
 - **Meta-description titles** ("Resumen en bullets", "Detailed overview") — use the
   real subject as the title/subtitle.
 - Inconsistent colors across slides.
