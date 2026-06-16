@@ -5,7 +5,7 @@
   "configuration_entry_point": "/api/briefscope_local_gpu/config",
   "documentation_entry_point": "/api/briefscope_local_gpu/docs",
   "healthcheck_entry_point": "/api/briefscope_local_gpu/health",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "logo": "logo.png",
   "description": "Agente que analiza y genera documentos. Analiza los archivos que subes (PDF, DOCX, XLSX, TXT, MD) y genera entregables descargables (PDF, DOCX, XLSX, PPTX, MD, TXT), con búsqueda RAG sobre tu contenido. Versión LOCAL GPU: LLM vía Ollama y embeddings locales (sentence-transformers) acelerados por GPU NVIDIA; sin internet ni API keys.",
   "description_en": "Agent that analyzes and generates documents. It analyzes your uploaded files (PDF, DOCX, XLSX, TXT, MD) and generates downloadable deliverables (PDF, DOCX, XLSX, PPTX, MD, TXT), with RAG search over your content. LOCAL GPU version: LLM via Ollama and local embeddings (sentence-transformers) accelerated by an NVIDIA GPU; no internet or API keys required.",

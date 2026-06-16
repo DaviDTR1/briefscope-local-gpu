@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [1.7.2] - 2026-06-16
+
+### Added
+- **Root path redirects to the UI.** A request to `/` now redirects to the SPA
+  at `/ui/` (using a `307` to `{root_path}/ui/`), so opening the bare host —
+  e.g. http://localhost:8080 — lands on the app. The redirect honors the kernel's
+  `root_path` prefix, so it works both standalone and behind QueAI/Traefik.
 ## [1.7.1] - 2026-06-16
 
 ### Added
