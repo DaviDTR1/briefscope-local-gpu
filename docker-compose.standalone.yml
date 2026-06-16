@@ -1,0 +1,83 @@
+# Self-contained standalone stack — run BriefScope WITHOUT the QueAI kernel.
+#
+# Unlike docker-compose.yml (which expects the kernel's external network and
+# Traefik), this file is COMPLETE on its own: it defines every service (app +
+# GPU Ollama + ChromaDB), its own private network and volumes, publishes the app
+# port, and serves everything at the host root. No `docker network create` and
+# no second -f file are needed. No API keys required.
+#
+# Requires the NVIDIA Container Toolkit on the host (the bundled Ollama
+# container uses the GPU):
+#   https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
+#
+# Start:  docker compose -f docker-compose.standalone.yml up -d --build
+# Open:   http://localhost:8080/ui/
+# Stop:   docker compose -f docker-compose.standalone.yml down
+#
+# The default Ollama model is pulled automatically on first use. To pre-pull:
+#   docker exec briefscope_ollama_gpu ollama pull llama3.2
+#
+# Tip: change "8080:8080" to e.g. "8090:8080" to use a different host port.
+
+services:
+  # ── Ollama (GPU — NVIDIA) ─────────────────────────────────────────────────
+  briefscope_ollama_gpu:
+    image: ollama/ollama:latest
+    container_name: briefscope_ollama_gpu
+    volumes:
+      - briefscope_ollama_gpu_models:/root/.ollama
+    networks:
+      - briefscope
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  # ── ChromaDB vector store ─────────────────────────────────────────────────
+  briefscope_chroma_gpu:
+    image: chromadb/chroma:1.5.9
+    container_name: briefscope_chroma_gpu
+    environment:
+      - IS_PERSISTENT=TRUE
+      - ANONYMIZED_TELEMETRY=FALSE
+    volumes:
+      - briefscope_chroma_gpu_data:/data
+    networks:
+      - briefscope
+    restart: unless-stopped
+
+  # ── BriefScope app ────────────────────────────────────────────────────────
+  briefscope_local_gpu:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: briefscope_local_gpu_service
+    environment:
+      - ROOT_PATH=        # blank → UI, API and /docs serve at the host root
+      - LLM_MODE=local
+      - OLLAMA_HOST=http://briefscope_ollama_gpu:11434
+    volumes:
+      - briefscope_local_gpu_data:/code/data
+      - briefscope_local_gpu_generated:/code/generated
+    networks:
+      - briefscope
+    depends_on:
+      - briefscope_ollama_gpu
+      - briefscope_chroma_gpu
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+volumes:
+  briefscope_ollama_gpu_models:
+  briefscope_local_gpu_data:
+  briefscope_local_gpu_generated:
+  briefscope_chroma_gpu_data:
+
+networks:
+  briefscope:
+    driver: bridge

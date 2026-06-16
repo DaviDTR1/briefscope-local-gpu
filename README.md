@@ -1,10 +1,15 @@
 # BriefScope — LOCAL GPU
 
-**Document-analysis agent for the [QueAI](https://github.com/queai-project/QueAI)
-kernel.** Upload your documents, ask questions about them, and let the agent
-research, summarize and generate downloadable deliverables — running **fully
-offline with NVIDIA GPU acceleration**: the LLM runs in a bundled Ollama
-container exposed to the GPU, and embeddings run locally via sentence-transformers.
+**Document-analysis agent.** Upload your documents, ask questions about them, and
+let the agent research, summarize and generate downloadable deliverables —
+running **fully offline with NVIDIA GPU acceleration**: the LLM runs in a bundled
+Ollama container exposed to the GPU, and embeddings run locally via
+sentence-transformers.
+
+> Runs **two ways**: as a plugin inside the
+> [QueAI](https://github.com/queai-project/QueAI) kernel, or fully
+> **standalone** with nothing but Docker — see
+> [Run standalone (without QueAI)](#run-standalone-without-queai).
 
 > This is the **LOCAL GPU** variant. It requires an NVIDIA GPU and the NVIDIA
 > Container Toolkit. By default it needs **no API keys and no internet** once
@@ -64,17 +69,56 @@ Key REST routes (all under the plugin root path `/api/briefscope_local_gpu`):
 
 ## Requirements
 
-- A running [QueAI](https://github.com/queai-project/QueAI) kernel (Docker +
-  Docker Compose v2).
+- **Docker + Docker Compose v2** — that's all you need to run it.
 - An **NVIDIA GPU** and the **NVIDIA Container Toolkit**
   ([install guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)).
 - Enough VRAM for the chosen Ollama model (the default `llama3.2` needs ~2 GB).
 - Internet access **only** on first use, to download the model and embedding
   weights. After that it runs offline.
 
-## Install
+QueAI is **optional**: it's only needed if you want to run BriefScope as a
+managed plugin alongside other plugins. To run it on its own, skip straight to
+[Run standalone (without QueAI)](#run-standalone-without-queai).
 
-### As a QueAI plugin (recommended)
+## Run standalone (without QueAI)
+
+BriefScope is a self-contained FastAPI app plus bundled GPU-enabled Ollama and
+ChromaDB containers. It does not need the kernel, Traefik or any other plugin to
+run — only Docker and the NVIDIA Container Toolkit. No API keys are required.
+
+```bash
+# Build and start everything (app + GPU Ollama + ChromaDB)
+docker compose -f docker-compose.standalone.yml up -d --build
+
+# Then open the UI
+#    http://localhost:8080/ui/
+```
+
+It works out of the box — the default Ollama model is pulled automatically on
+first use (allow a few minutes the first time). Use **Settings** to change the
+Ollama model or the embedding model. To pre-pull a model yourself:
+
+```bash
+docker exec briefscope_ollama_gpu ollama pull llama3.2
+```
+
+`docker-compose.standalone.yml` is **self-contained**: it defines every service
+(app + GPU Ollama + ChromaDB), its own private network and volumes, publishes
+the app on host port `8080`, and blanks `ROOT_PATH` so the UI, REST API and
+interactive docs (`/docs`) all live at the host root instead of behind the
+kernel's `/api/...` path prefix. You do **not** need the base
+`docker-compose.yml`, a second `-f` flag, or a manually created network. Want a
+different port? Edit the `8080:8080` mapping in that file. To stop and remove
+everything:
+
+```bash
+docker compose -f docker-compose.standalone.yml down
+```
+
+## Install as a QueAI plugin
+
+If you do run the [QueAI](https://github.com/queai-project/QueAI) kernel, install
+BriefScope as a plugin instead:
 
 1. Make this plugin available to your kernel (clone it into the kernel's
    `plugins/` directory, or install it from the marketplace if registered).
@@ -83,16 +127,9 @@ Key REST routes (all under the plugin root path `/api/briefscope_local_gpu`):
 4. Open the plugin UI. It works out of the box; use **Settings** to change the
    Ollama model or the embedding model.
 
-### Standalone (development)
-
-```bash
-docker compose up -d --build
-```
-
-This brings up the app, GPU-enabled Ollama and ChromaDB on the external
-`queai_network`. The app expects that network to exist (the kernel creates it);
-create it manually with `docker network create queai_network` if you run the
-plugin on its own.
+In this mode the kernel provides the `queai_network` and Traefik routes the app
+at `/api/briefscope_local_gpu`; the base `docker-compose.yml` is used as-is (no
+standalone override).
 
 ## Configuration
 
@@ -101,14 +138,13 @@ to `data/config.json` (which survives container restarts via the plugin's Docker
 volume). A `.env.example` documents the environment defaults and recommended
 models.
 
-`docker-compose.yml` sets these environment variables automatically — do not
-change them:
+`docker-compose.yml` sets these environment variables automatically:
 
 | Variable | Value | Meaning |
 |---|---|---|
-| `ROOT_PATH` | `/api/briefscope_local_gpu` | Traefik path prefix / FastAPI `root_path` |
-| `LLM_MODE` | `local` | Selects the local (Ollama) path |
-| `OLLAMA_HOST` | `http://briefscope_ollama_gpu:11434` | Bundled GPU Ollama container |
+| `ROOT_PATH` | `/api/briefscope_local_gpu` | FastAPI `root_path` / kernel path prefix. Blanked to `""` in `docker-compose.standalone.yml` so everything serves at the host root. |
+| `LLM_MODE` | `local` | Selects the local (Ollama) path. Leave as-is. |
+| `OLLAMA_HOST` | `http://briefscope_ollama_gpu:11434` | Bundled GPU Ollama container. Leave as-is. |
 
 Tunable from the Settings UI:
 

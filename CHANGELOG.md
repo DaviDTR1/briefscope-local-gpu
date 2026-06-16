@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [1.7.1] - 2026-06-16
+
+### Added
+- **Run standalone without QueAI.** New **self-contained**
+  `docker-compose.standalone.yml` plus a README "Run standalone" section. It
+  defines every service, its own private network and volumes, so a single
+  command runs the whole stack: `docker compose -f docker-compose.standalone.yml
+  up -d --build`, then open http://localhost:8080/ui/. It publishes the app port
+  and blanks `ROOT_PATH` so the UI, REST API and `/docs` all serve at the host
+  root instead of behind the kernel's `/api/...` prefix — no base compose
+  file, extra `-f` flag or manual network needed.
+
+### Changed
+- README reframed so QueAI is **optional** rather than a prerequisite; the two
+  run modes (standalone vs. QueAI plugin) are now documented side by side.
 
 ## [1.7.0] - 2026-06-16
 
