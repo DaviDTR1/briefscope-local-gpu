@@ -61,6 +61,12 @@ async def chat(
     conv.updated_at = datetime.now(timezone.utc)
     db.commit()
 
+    # Message that actually reaches the agent for this turn: the clean message
+    # plus the ephemeral context note (attachment reference), if any.
+    agent_message = body.message
+    if body.agent_context and body.agent_context.strip():
+        agent_message = f"{body.message}\n\n{body.agent_context.strip()}"
+
     docs = [
         {
             "id": d.id,
@@ -71,7 +77,7 @@ async def chat(
         for d in project.documents
     ]
     try:
-        doc_context, used_rag = build_document_context(project_id, docs, body.message)
+        doc_context, used_rag = build_document_context(project_id, docs, agent_message)
     except Exception as exc:
         logger.exception("Error building document context: %s", exc)
         doc_context, used_rag = "", False
@@ -85,7 +91,7 @@ async def chat(
     history = get_active_messages(conv)
     if history and history[-1]["role"] == "user" and history[-1]["content"] == body.message:
         history = history[:-1]
-    history.append({"role": "user", "content": body.message})
+    history.append({"role": "user", "content": agent_message})
 
     logger.debug(
         "Streaming -- project=%s conv=%s rag=%s msgs=%s",

@@ -20,7 +20,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="BriefScope LOCAL GPU",
     description="Intelligent document agent with RAG, tool calling and file generation.",
-    version="1.6.0",
+    version="1.7.0",
     root_path=os.getenv("ROOT_PATH", "/api/briefscope_local_gpu"),
     lifespan=lifespan,
 )

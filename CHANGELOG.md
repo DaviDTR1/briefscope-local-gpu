@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.0] - 2026-06-16
+
+### Added
+- **Attachment references reach the agent without polluting the history.** When a
+  document is attached via the chat "+" button, the message sent to the agent now
+  carries an ephemeral reference to the just-attached file(s) (`agent_context`),
+  so the agent knows they were added this turn. The user's stored and displayed
+  message stays clean — that reference is never saved to the conversation history.
+
 ## [1.6.0] - 2026-06-16
 
 ### Added

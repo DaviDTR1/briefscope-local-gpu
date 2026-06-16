@@ -74,6 +74,7 @@ class ConversationDetail(ConversationOut):
 class ChatRequest(BaseModel):
     message: str
     conversation_id: Optional[int] = None  # None → create new conversation
+    agent_context: Optional[str] = None
 
 
 # Config schemas live in app/routers/config_router.py
