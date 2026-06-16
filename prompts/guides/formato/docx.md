@@ -51,3 +51,11 @@ Common mistakes:
 - `add_heading` with `level=0` creates a document title, not an H1.
 
 **Quick decision:** standard editable text? → fast path. Word-specific layout? → code path.
+
+## Deliver complete content (no template)
+
+Fill the document with all the real information you have. Do **not** deliver an
+empty template or a skeleton with blanks, sample text or "fill here" lines unless
+the user **explicitly** asked for a template or form. If extra material, an image,
+an additional section or a reusable blank version could help, **suggest it in your
+chat reply** — never leave gaps, placeholders or "space to add X" inside the file.

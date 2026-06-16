@@ -34,3 +34,11 @@ When you wrap a section in a raw HTML tag for layout (columns, cards), **Markdow
 Leave a blank line after the opening tag, and add the CSS (`.skills-grid { column-count: 2; }`) in `estilo_css`. Alternatively, write the inner content as pure HTML (`<h3>`, `<ul><li>`) with no Markdown inside the wrapper. Never mix Markdown syntax into a raw `<div>`/`<td>` that lacks `markdown="1"`.
 
 For PDF from the same content, use `formato: "pdf"` (same engine, same CSS).
+
+## Deliver complete content (no template)
+
+Fill the document with all the real information you have. Do **not** deliver an
+empty template or a skeleton with blanks, sample text or "fill here" lines unless
+the user **explicitly** asked for a template or form. If extra material, an image,
+an additional section or a reusable blank version could help, **suggest it in your
+chat reply** — never leave gaps, placeholders or "space to add X" inside the file.

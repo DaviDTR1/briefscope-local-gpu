@@ -17,3 +17,11 @@ Common mistakes:
 - To keep exact line breaks, write them directly in the content.
 
 If the user wants to keep the Markdown formatting (headings, lists) raw, use `formato: "md"` instead.
+
+## Deliver complete content (no template)
+
+Fill the document with all the real information you have. Do **not** deliver an
+empty template or a skeleton with blanks, sample text or "fill here" lines unless
+the user **explicitly** asked for a template or form. If extra material, an image,
+an additional section or a reusable blank version could help, **suggest it in your
+chat reply** — never leave gaps, placeholders or "space to add X" inside the file.

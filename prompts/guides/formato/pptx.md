@@ -59,9 +59,25 @@ Best practices:
 - Use the blank layout (`slide_layouts[6]`) and place text boxes yourself for consistent design; or use layouts with placeholders (`[0]` title, `[1]` content) for speed.
 - Define `RGBColor` constants from the chosen palette and reuse them.
 - One idea per slide; short titles; few-word bullets; charts/big numbers over prose.
+- **Only real assets.** Add a picture only when you actually have a real image
+  (provided, in the source, or genuinely generated). Never type a fake caption
+  like "[Imagen sin copyright] ...", a placeholder QR/link/store button, or a
+  reader tip ("Sugerencia: ...") onto a slide. If a visual or link would help,
+  suggest it in your chat reply instead of inserting a placeholder.
 
 Common mistakes:
 - Do not forget `guardar_documento(prs)` at the end.
 - `add_slide` needs a *layout*, not a loose index: `prs.slide_layouts[i]`.
 - Placeholders vary by layout; if `slide.placeholders[1]` fails, use a manual text box.
 - Measurements are in EMU: always use `Inches(...)` or `Pt(...)`, never raw numbers.
+- Do not fill slides with placeholder/fake content (fake image captions,
+  placeholder QR/links, reader tips). If it is not real, leave it out and mention
+  it in chat.
+
+## Deliver complete content (no template)
+
+Fill the document with all the real information you have. Do **not** deliver an
+empty template or a skeleton with blanks, sample text or "fill here" lines unless
+the user **explicitly** asked for a template or form. If extra material, an image,
+an additional section or a reusable blank version could help, **suggest it in your
+chat reply** — never leave gaps, placeholders or "space to add X" inside the file.

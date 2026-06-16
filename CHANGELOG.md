@@ -7,6 +7,65 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-06-15
+
+### Added
+- **Research-backed best practices baked into every type guide.** Each document
+  type guide now carries evidence-based guidance gathered from web research, plus
+  concrete color palettes (HEX), layout options and structure recommendations:
+  - **CV** — ATS-first rules so the document is reliably parsed by applicant
+    tracking systems (single column, standard headings, no tables/images in the
+    ATS-safe layout, web-safe fonts), plus conservative and creative palettes and
+    two layout options.
+  - **Cover letter (carta)** — length and paragraph structure, block style, and
+    letterhead palette/layout options.
+  - **Professional report** — executive-summary guidance, heading hierarchy,
+    margins and corporate/modern/elegant palettes.
+  - **Presentation** — assertion-evidence, 10/20/30 and 6x6 rules, type sizes and
+    dark/light/corporate palettes with two layout patterns.
+  - **Invoice/quote** — required legal/tax elements, numeric alignment and
+    total emphasis rules, plus professional palettes.
+  - **Dashboard** — F/Z reading order, 5-9 metric ceiling, chart-type-per-data
+    and sequential/diverging palettes.
+  - **Brochure/flyer** — hero headline and single-CTA rules, font/color limits,
+    and bold/tech/premium palettes with two layouts.
+  - **Article/essay** — readability rules (measure, font size, line height,
+    subheading cadence) and reading-friendly palettes with two layouts.
+
+## [1.4.2] - 2026-06-15
+
+### Changed
+- **Documents are delivered complete, not as templates.** The orchestrator,
+  creator agent and every format/type guide now state that the file must be a
+  finished document filled with the real information — never an empty skeleton
+  with blanks or "space to add X" — unless the user explicitly asks for a
+  template/form. Ideas for extra content (images, sections, a reusable blank
+  version) are offered as suggestions in the chat reply, not left as gaps in the
+  file.
+- **No more phantom files.** When several formats are requested (e.g. Word *and*
+  PDF), the creator now generates one file per format with its own call and must
+  confirm each before reporting it; it must never announce or invent a file that
+  was not actually generated. The orchestrator reports only the files that truly
+  appear in `[GENERATED_FILES]`. Fixes the case where a PDF was announced but not
+  produced.
+
+### Added
+- New type guides to broaden the catalog of document possibilities:
+  `folleto` (brochure / flyer / one-pager), `cv` (résumé) and `articulo`
+  (article / essay / blog post).
+
+## [1.4.1] - 2026-06-15
+
+### Changed
+- **Document creator: no placeholders or fake assets.** The creator agent and the
+  PPTX format / presentation type guides now forbid filling documents with content
+  that is not real: no fake image captions (e.g. "[Imagen sin copyright] ..."), no
+  placeholder QR codes or store/library links, and no reader tips or
+  meta-commentary embedded in the document. Images and links are inserted only
+  when a real asset exists; if a visual would help, the agent suggests it in the
+  chat reply, and reader suggestions are surfaced in chat instead of printed in
+  the file.
+
 ## [1.4.0] - 2026-06-15
 
 ### Added
