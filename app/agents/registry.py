@@ -56,6 +56,13 @@ class _BuscarInput(BaseModel):
     )
 
 
+class _BuscarWebInput(BaseModel):
+    consulta: str = Field(
+        description="Web search query in natural language, specific and focused. "
+        "E.g.: 'modern report color palette hex', 'professional slide layout best practices'."
+    )
+
+
 class _GuardarInvestigacionInput(BaseModel):
     nombre: str = Field(description="Descriptive name for the content, without extension.")
     contenido_md: str = Field(
@@ -199,6 +206,26 @@ def _build_executable(name: str, ctx: RunContext) -> StructuredTool:
             ),
             func=_search,
             args_schema=_BuscarInput,
+        )
+
+    if name == "buscar_en_web":
+        from app.services.web_search import search_web
+
+        def _search_web(consulta: str) -> str:
+            return search_web(consulta)
+
+        return StructuredTool(
+            name="buscar_en_web",
+            description=(
+                "Searches the public web (DuckDuckGo) for external references that are "
+                "NOT in the project's documents. The creator uses it to look up document "
+                "design references: color palettes, font pairings, layouts, presentation "
+                "and typography best practices. Returns a list of results with title, URL "
+                "and snippet. Use it to complement — not replace — the project documents; "
+                "for data that lives in the uploaded files use buscar_en_documentos instead."
+            ),
+            func=_search_web,
+            args_schema=_BuscarWebInput,
         )
 
     if name == "guardar_investigacion":

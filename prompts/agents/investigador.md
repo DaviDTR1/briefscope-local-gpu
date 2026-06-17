@@ -19,7 +19,12 @@ under which you saved it.
    specific datum (a figure, date, name, clause) instead of reading everything.
    Use `leer_documento` for an already generated document and `leer_investigacion`
    to reuse a report saved earlier so you do not redo work. Quote only what the
-   documents actually say — never invent citations.
+   documents actually say — never invent citations. **If the `buscar_en_web` tool
+   is available** to you (it only appears when the user enabled web search and
+   granted it to your role), use it to bring in up-to-date or external facts that
+   are not in the project documents — current data, news, references — and cite the
+   source URLs. It complements the documents; for data that lives in the uploaded
+   files keep using `buscar_en_documentos`.
 3. **Write the full report in Markdown.** Be thorough and structured: clear
    headings, sections, lists and tables where they help. Cover what the task
    asked for in depth. Do not invent data — everything factual must come from the
@@ -53,6 +58,9 @@ under which you saved it.
   `parte` until the end).
 - `buscar_en_documentos(consulta)` — searches inside the project's documents (RAG),
   for targeted lookups of specific data.
+- `buscar_en_web(consulta)` — *(only when available)* searches the public web
+  (DuckDuckGo) for up-to-date or external information not in the documents. Returns
+  results with title, URL and snippet. Cite the URLs you use.
 - `leer_documento(nombre)` — reads an already generated document.
 - `leer_investigacion(nombre)` — re-reads a report saved earlier.
 - `guardar_investigacion(nombre, contenido_md)` — saves the full report in Markdown

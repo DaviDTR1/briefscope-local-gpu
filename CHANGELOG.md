@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.7.4] - 2026-06-16
+
+### Added
+- **Web search for the local agents.** A per-project globe toggle next to the
+  attachment (＋) button turns web search on or off for a chat (remembered per
+  project in the browser), in both local-Ollama and cloud modes. When on, the
+  permitted agents gain a `buscar_en_web` tool backed by DuckDuckGo via the `ddgs`
+  package — no API key required. **Settings → Local** gains a *Web Search* section
+  to choose which agents may search (Researcher and/or Creator; default: Researcher
+  only). The button is the master per-project switch; Settings is the global
+  per-agent permission list. Off → no agent searches; on → only the permitted ones.
+- **Design-focused web search for the Creator.** When the Creator is granted web
+  search, it uses it solely for document-design references — color palettes, font
+  pairings, layouts, and presentation/typography best practices (Canva, Adobe,
+  Nielsen Norman Group, Presentation Zen, Duarte, Google Fonts, Coolors, Material
+  Design, and others) — never as a source of factual content for the document.
+
 ## [1.7.3] - 2026-06-16
 
 ### Changed

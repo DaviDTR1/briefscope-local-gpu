@@ -13,3 +13,4 @@ class RunContext:
     saved_research: list[str] = field(default_factory=list)  # report names saved this turn
     generated_files: list[str] = field(default_factory=list)  # downloadable files this turn
     delegations: int = 0         # global sub-agent invocation counter (cap in §6)
+    web_search: bool = False     # master on/off for web search this turn (per-project button)

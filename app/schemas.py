@@ -75,6 +75,7 @@ class ChatRequest(BaseModel):
     message: str
     conversation_id: Optional[int] = None  # None → create new conversation
     agent_context: Optional[str] = None
+    web_search: Optional[bool] = False  # per-project web-search master switch
 
 
 # Config schemas live in app/routers/config_router.py

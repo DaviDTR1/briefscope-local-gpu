@@ -103,7 +103,7 @@ async def chat(
     return StreamingResponse(
         _sse_generator(
             body.message, history, instructions_block, doc_context,
-            conv.id, used_rag, project_id, doc_names,
+            conv.id, used_rag, project_id, doc_names, bool(body.web_search),
         ),
         media_type="text/event-stream",
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
@@ -183,6 +183,7 @@ async def _sse_generator(
     used_rag: bool,
     project_id: int = 0,
     doc_names: list[str] | None = None,
+    web_search: bool = False,
 ) -> AsyncGenerator[bytes, None]:
     full_response = ""
     generated_files: list[str] = []
@@ -196,6 +197,7 @@ async def _sse_generator(
             doc_context=doc_context,
             doc_names=doc_names or [],
             project_id=project_id,
+            web_search=web_search,
         ):
             # Thinking status event
             if chunk.startswith('{"__thinking__"'):

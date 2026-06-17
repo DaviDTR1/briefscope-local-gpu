@@ -6,7 +6,7 @@ so both the Ollama fields and the cloud API keys are exposed and editable. The
 active LLM mode is reported (read-only here; it comes from config / LLM_MODE env).
 """
 from __future__ import annotations
-from typing import Optional
+from typing import List, Optional
 from fastapi import APIRouter
 from pydantic import BaseModel
 from app import config
@@ -29,6 +29,7 @@ class ConfigOut(BaseModel):
     rag_threshold_tokens:  int
     rag_top_k:             int
     history_compact_after: int
+    web_search_agents:     List[str]
 
 
 class ConfigUpdate(BaseModel):
@@ -43,6 +44,7 @@ class ConfigUpdate(BaseModel):
     rag_threshold_tokens:  Optional[int] = None
     rag_top_k:             Optional[int] = None
     history_compact_after: Optional[int] = None
+    web_search_agents:     Optional[List[str]] = None
 
 
 class ConfigStatus(BaseModel):
@@ -68,6 +70,7 @@ def get_config():
         rag_threshold_tokens  = cfg["rag_threshold_tokens"],
         rag_top_k             = cfg["rag_top_k"],
         history_compact_after = cfg["history_compact_after"],
+        web_search_agents     = cfg.get("web_search_agents", ["investigador"]),
     )
 
 
@@ -81,6 +84,9 @@ def update_config(body: ConfigUpdate):
                   "rag_threshold_tokens", "rag_top_k", "history_compact_after"):
         if raw[field] is not None:
             changes[field] = raw[field]
+    if raw.get("web_search_agents") is not None:
+        allowed = {"investigador", "creador"}
+        changes["web_search_agents"] = [a for a in raw["web_search_agents"] if a in allowed]
     config.update(changes)
     return get_config()
 

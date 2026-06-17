@@ -40,6 +40,7 @@ async def stream_chat(
     doc_context: str = "",
     doc_names: list[str] | None = None,
     project_id: int = 0,
+    web_search: bool = False,
     tools_enabled: bool = True,  # kept for signature compatibility
 ) -> AsyncGenerator[str, None]:
     ctx = RunContext(
@@ -47,6 +48,7 @@ async def stream_chat(
         doc_context=doc_context,
         instructions=instructions,
         doc_names=doc_names or [],
+        web_search=web_search,
     )
     mode = _resolve_mode()
     if mode == "pipeline":

@@ -37,6 +37,9 @@ langchain-anthropic==1.4.6
 langchain-openai==1.3.0
 langchain-google-genai==4.2.5
 
+# Web search (DuckDuckGo, provider-agnostic, no API key)
+ddgs==9.14.4
+
 # Ollama health checks
 httpx==0.28.0
 
