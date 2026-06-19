@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.5] - 2026-06-19
+
+### Changed
+- **Web search toggle restyled.** When active it now shows an inverted solid fill
+  (accent background with the icon in the background color); both the attachment
+  (＋) and web search buttons get a clearly visible border in their normal/inactive
+  state.
+- **Documents are always "ready to show".** The Creator agent no longer adds
+  optimization metadata or non-deliverable sections to a document — ATS/SEO keyword
+  lists (e.g. a "Palabras clave ATS" block), internal notes or version notes are
+  out. Keywords are woven naturally into the real content; any such remark is sent
+  to the user in chat instead. Such a section is only included when the user
+  explicitly asks for it; the agent may recommend it in chat but never inserts it
+  unprompted.
+- **README and assets aligned across variants.** The READMEs now document the
+  optional web search and the three-agent architecture (main / researcher /
+  creator), and the logo is identical across all variants.
+
+### Fixed
+- **Chat input resets after sending.** The message box now returns to its base
+  size after a message is sent instead of keeping the height it grew to while
+  typing.
+
 ## [1.7.4] - 2026-06-16
 
 ### Added
