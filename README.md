@@ -2,9 +2,9 @@
 
 **Document-analysis agent.** Upload your documents, ask questions about them, and
 let the agent research, summarize and generate downloadable deliverables —
-running **fully offline with NVIDIA GPU acceleration**: the LLM runs in a bundled
-Ollama container exposed to the GPU, and embeddings run locally via
-sentence-transformers.
+running **fully offline with NVIDIA GPU acceleration**: both the LLM and the
+embeddings run in a bundled Ollama container exposed to the GPU (embeddings via
+`nomic-embed-text` by default).
 
 > Runs **two ways**: as a plugin inside the
 > [QueAI](https://github.com/queai-project/QueAI) kernel, or fully
@@ -13,7 +13,7 @@ sentence-transformers.
 
 > This is the **LOCAL GPU** variant. It requires an NVIDIA GPU and the NVIDIA
 > Container Toolkit. By default it needs **no API keys and no internet** once
-> the model and embedding weights are downloaded — the only runtime feature that
+> the LLM and embedding models are downloaded — the only runtime feature that
 > reaches the internet is the **optional web search**, which is off by default.
 > It can optionally be pointed at a cloud provider from the Settings UI. For
 > other backends see the [other variants](#other-variants).
@@ -48,8 +48,7 @@ sentence-transformers.
 ```
 client → Traefik (PathPrefix /api/briefscope_local_gpu) → FastAPI app
                                                             ├── Ollama (LLM, bundled container, NVIDIA GPU)
-                                                            ├── ChromaDB (vector store, bundled container)
-                                                            └── sentence-transformers (embeddings, in-process)
+                                                            └── ChromaDB (vector store, bundled container)
 ```
 
 - **Backend**: FastAPI (`app/`), SQLAlchemy for project/conversation metadata
@@ -59,7 +58,9 @@ client → Traefik (PathPrefix /api/briefscope_local_gpu) → FastAPI app
   HTTP on the shared `queai_network`.
 - **Vector store**: a bundled `chromadb/chroma` container
   (`briefscope_chroma_gpu`). Data persists in its own Docker volume.
-- **Embeddings**: sentence-transformers, run in-process via ChromaDB.
+- **Embeddings**: computed by the bundled Ollama server (`/api/embed`,
+  `nomic-embed-text` by default, GPU-accelerated) and passed to ChromaDB
+  explicitly — no sentence-transformers/torch, so the image stays small.
 - **Frontend**: a React (Vite + TypeScript) single-page app served from
   `frontend_dist/` at `/ui`.
 
@@ -160,10 +161,12 @@ Tunable from the Settings UI:
   Recommended GPU models are listed in `.env.example`
   (`llama3.2`, `phi4-mini`, `mistral`, `deepseek-r1:7b`, up to `llama3.1:70b`
   for high-end GPUs).
-- **Embedding model** — local sentence-transformers model used for document
-  search. Recommended models (English and multilingual) are listed in
-  `.env.example`. **Changing it invalidates previously indexed documents —
-  re-upload them** so they are re-embedded with the new model.
+- **Embedding model** — Ollama embedding model used for document search
+  (`nomic-embed-text` by default; `mxbai-embed-large`, `bge-m3` and
+  `qwen3-embedding` are also available, see `.env.example`). Pulled into Ollama
+  automatically on first use and GPU-accelerated. **Changing it invalidates
+  previously indexed documents — re-upload them** so they are re-embedded with
+  the new model.
 - **RAG token threshold**, **RAG top-K**, **history compaction**.
 
 ## File generation
@@ -199,8 +202,8 @@ different LLM/embedding backend:
 
 | Variant | LLM & embeddings | Keys / internet |
 |---|---|---|
-| **LOCAL GPU** (this one) | Ollama + local sentence-transformers (NVIDIA GPU) | none, offline |
-| LOCAL CPU | Ollama + local sentence-transformers (CPU) | none, offline |
+| **LOCAL GPU** (this one) | Ollama LLM + Ollama embeddings (NVIDIA GPU) | none, offline |
+| LOCAL CPU | Ollama LLM + Ollama embeddings (CPU) | none, offline |
 | CLOUD OpenAI | OpenAI GPT + OpenAI embeddings | OpenAI key, outbound |
 | CLOUD Gemini | Google Gemini + Google embeddings | Google key, outbound |
 

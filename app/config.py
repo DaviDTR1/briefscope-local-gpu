@@ -45,9 +45,10 @@ _DEFAULTS: dict[str, Any] = {
     "google_api_key":     "",
     "ollama_host":        os.getenv("OLLAMA_HOST",  "http://host.docker.internal:11434"),
     "ollama_model":       os.getenv("OLLAMA_MODEL", "llama3.2"),
-    # Local embedding model (sentence-transformers, runs in-process via ChromaDB).
-    # Selectable from the UI; recommendations are listed in .env.example.
-    "embedding_model":    os.getenv("EMBEDDING_MODEL", "all-MiniLM-L6-v2"),
+    # Local embedding model, computed by the bundled Ollama server (/api/embed).
+    # Pulled into Ollama on first use. Selectable from the UI; recommendations
+    # are listed in .env.example.
+    "embedding_model":    os.getenv("EMBEDDING_MODEL", "nomic-embed-text"),
     "rag_threshold_tokens": 100_000,
     "rag_top_k":            15,
     "rag_chunk_size":       1200,

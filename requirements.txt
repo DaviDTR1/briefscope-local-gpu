@@ -14,9 +14,9 @@ openpyxl==3.1.5          # XLSX read + code-mode generation
 # Token counting
 tiktoken==0.8.0
 
-# Vector DB + embeddings (local, CPU)
+# Vector DB (local). Embeddings are computed by the bundled Ollama server
+# (/api/embed), so no sentence-transformers/torch is needed here.
 chromadb==1.5.9
-sentence-transformers==3.3.1
 
 # File generation
 # Two complementary engines:
@@ -40,7 +40,7 @@ langchain-google-genai==4.2.5
 # Web search (DuckDuckGo, provider-agnostic, no API key)
 ddgs==9.14.4
 
-# Ollama health checks
+# Ollama health checks + embeddings calls (/api/embed, /api/pull, /api/tags)
 httpx==0.28.0
 
 # Utilities

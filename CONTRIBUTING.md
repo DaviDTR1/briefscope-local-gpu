@@ -27,8 +27,8 @@ contribute to the QueAI repository instead.
 ## Before you start
 
 1. Read the [README](README.md) to understand the architecture (FastAPI
-   backend + React frontend, ChromaDB vector store, GPU-accelerated Ollama LLM,
-   local sentence-transformers embeddings).
+   backend + React frontend, ChromaDB vector store, GPU-accelerated Ollama LLM +
+   Ollama embeddings).
 2. Make sure the **NVIDIA Container Toolkit** is installed on your host.
 3. Search existing open and closed issues before creating a new one.
 
@@ -69,8 +69,8 @@ kernel does is with Docker:
 docker compose up -d --build
 ```
 
-> The first chat request downloads the Ollama model, and the first document
-> upload downloads the embedding weights. Both are cached in Docker volumes.
+> The first chat request downloads the Ollama LLM, and the first document
+> upload pulls the Ollama embedding model. Both are cached in Docker volumes.
 
 ### Frontend
 

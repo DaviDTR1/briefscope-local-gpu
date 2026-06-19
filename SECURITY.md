@@ -55,17 +55,16 @@ Please include at least:
 
 ## Notes specific to the LOCAL GPU variant
 
-This variant runs **fully offline**: the LLM runs in a bundled Ollama container
-accelerated by an NVIDIA GPU, and embeddings run in-process via
-sentence-transformers. By default it needs **no API keys and no outbound
-internet** once the model and embedding weights have been downloaded.
+This variant runs **fully offline**: the LLM and the embeddings both run in a
+bundled Ollama container accelerated by an NVIDIA GPU. By default it needs **no
+API keys and no outbound internet** once the LLM and embedding models have been
+downloaded.
 
 - It requires the **NVIDIA Container Toolkit** on the host and exposes the GPU
   to the Ollama container. Treat GPU passthrough as part of your host's trust
   boundary.
-- Models are pulled from the Ollama registry on first use; embedding weights are
-  downloaded from the Hugging Face hub on first use. After that, operation is
-  offline.
+- The LLM and embedding models are pulled from the Ollama registry on first use.
+  After that, operation is offline.
 - The variant *also* allows pointing the LLM at a cloud provider from the
   Settings UI; if you do that, the cloud notes from the CLOUD variants apply
   (an API key is stored in `data/config.json` and outbound traffic is enabled).

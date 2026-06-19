@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.6] - 2026-06-19
+
+### Changed
+- **Embeddings now run on Ollama instead of sentence-transformers.** Document
+  search embeddings are computed by the bundled Ollama server (`/api/embed`,
+  GPU-accelerated) and passed to ChromaDB explicitly, dropping the
+  `sentence-transformers`/torch dependency to lower resource usage and image
+  size. Default model is `nomic-embed-text` (`mxbai-embed-large`, `bge-m3` and
+  `qwen3-embedding` also available); the model is pulled into Ollama
+  automatically on first use. Switching the embedding model invalidates
+  previously indexed documents — re-upload them so they are re-embedded.
+
 ## [1.7.5] - 2026-06-19
 
 ### Changed
